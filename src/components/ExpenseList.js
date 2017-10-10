@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import ExpenseListItem from './ExpenseListItem'
-import selectExpenses from '../selectors/expenses'
+import getVisibleExpenses from '../selectors/expenses'
 
 // Unconnected component
 export const ExpenseList = (props) => (
@@ -22,7 +22,7 @@ export const ExpenseList = (props) => (
 // Map state to props
 const mapStateToProps = (state) => {
     return {
-        expenses: selectExpenses(state.expenses, state.filters)
+        expenses: getVisibleExpenses(state.expenses, state.filters)
     }
 }
 
