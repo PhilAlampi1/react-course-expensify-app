@@ -71,3 +71,26 @@ test('should edit an expense with an INVALID id', () => {
     const state = expensesReducer(expenses, action)
     expect(state).toEqual(expenses)
 })
+
+// Set expense data (for testing purposes only)
+test('should set expenses', () => {
+    const initialData = [{
+        id: '21',
+        description: 'TEST Gum',
+        note: '',
+        amount: 195,
+        createdAt: 0
+    }, {
+        id: '23',
+        description: 'TEST Credit Card',
+        note: '',
+        amount: 4500,
+        createdAt: 1000
+    }]
+    const action = {
+        type: 'SET_EXPENSES',
+        expenses
+    }
+    const state = expensesReducer(initialData, action)
+    expect(state).toEqual(expenses)
+})

@@ -13,15 +13,15 @@ import database from '../firebase/firebase'
 //  1 - component calls action generator
 //  2 - action generator returns function
 //  3 - component dispatches function (using middleware)
-//  4 - function runs (has ability to dispatch other actions
+//  4 - function runs (has ability to update the DB, then dispatch other actions
 //      including those that dispatch objects to update the redux store)
 
 // ADD_EXPENSE
 // Why default to {} if no object is passed in?
 export const addExpense = (expense) => ({
-        type: 'ADD_EXPENSE',
-        expense
-    })
+    type: 'ADD_EXPENSE',
+    expense
+})
 
 export const startAddExpense = (expenseData = {}) => {
     return (dispatch) => {
@@ -54,3 +54,28 @@ export const editExpense = (id, updates) => ({
     updates
 })
 
+// SET_EXPENSES
+export const setExpenses = (expenses) => ({
+    type: 'SET_EXPENSES',
+    expenses
+})
+
+// 1 - Fetch all expense data once
+// 2 - Parse that data into an array
+// 3 - Dispatch SET_EXPENSES
+export const startSetExpenses = (expenseData = {}) => {
+    return (dispatch) => {
+        return database.ref('expenses')
+            .once('value')
+            .then((snapshot) => {
+                const existingExpenses = []
+                snapshot.forEach((childSnapshot) => {
+                    existingExpenses.push({
+                        id: childSnapshot.key,
+                        ...childSnapshot.val()
+                    })
+                })
+                dispatch(setExpenses(existingExpenses))
+            })
+    }
+}
