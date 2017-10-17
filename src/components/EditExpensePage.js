@@ -1,17 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import ExpenseForm from './ExpenseForm'
-import { editExpense, startRemoveExpense } from '../actions/expenses'
+import { startEditExpense, startRemoveExpense } from '../actions/expenses'
 
 // NOTE - need to add this. in front of all props for this to work
 export class EditExpensePage extends React.Component {
     onSubmit = (expense) => {
-        this.props.editExpense(this.props.expense.id, expense)
+        this.props.startEditExpense(this.props.expense.id, expense)
         // this.props.dispatch(editExpense(this.props.expense.id, expense)) // inline function (bad)
         this.props.history.push('/')
     }
     onRemove = () => {
-        this.props.removeExpense({ 
+        this.props.startRemoveExpense({ 
             id: this.props.expense.id 
         })
         // this. props.dispatch(removeExpense({ id: this.props.expense.id })) // inline function (bad)
@@ -57,8 +57,8 @@ const mapStateToProps = (state, props) => ({
 // when calling these methods above.
 // NOTE - added the props argument because method definitions above required it (I think that's why?)
 const mapDispatchToProps = (dispatch, props) => ({
-    editExpense: (id, expense) => dispatch(editExpense(id, expense)),
-    removeExpense: (data) => dispatch(startRemoveExpense(data))
+    startEditExpense: (id, expense) => dispatch(startEditExpense(id, expense)),
+    startRemoveExpense: (data) => dispatch(startRemoveExpense(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditExpensePage)
