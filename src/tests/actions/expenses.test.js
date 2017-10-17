@@ -1,6 +1,13 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { startAddExpense, addExpense, editExpense, removeExpense, setExpenses, startSetExpenses } from '../../actions/expenses'
+import { 
+    startAddExpense, 
+    addExpense, 
+    editExpense, 
+    removeExpense, 
+    setExpenses, 
+    startSetExpenses, 
+    startRemoveExpense } from '../../actions/expenses'
 import expenses from '../fixtures/expenses'
 import database from '../../firebase/firebase'
 
@@ -29,10 +36,10 @@ test('removeExpense() sets up expense action object', () => {
 
 // *** updateObject() Test ***
 const updateObject = {
-        description: 'yo you description',
-        note: 'note this up',
-        amount: 2032,
-        createdAt: 1000
+    description: 'yo you description',
+    note: 'note this up',
+    amount: 2032,
+    createdAt: 1000
 }
 
 test('editExpense() sets up action object', () => {
@@ -89,7 +96,7 @@ test('should add expense with defaults to database and store', (done) => {
         description: '',
         note: '',
         amount: 0,
-        createdAt: 0 
+        createdAt: 0
     }
     store.dispatch(startAddExpense({})).then(() => {
         const actions = store.getActions()
@@ -107,7 +114,7 @@ test('should add expense with defaults to database and store', (done) => {
     })
 })
 
-test ('should set up set expense action object with data', () => {
+test('should set up set expense action object with data', () => {
     const action = setExpenses(expenses)
     expect(action).toEqual({
         type: 'SET_EXPENSES',
@@ -115,7 +122,7 @@ test ('should set up set expense action object with data', () => {
     })
 })
 
-test ('should fetch the expenses from firebase', (done) => {
+test('should fetch the expenses from firebase', (done) => {
     const store = createMockStore({})
     store.dispatch(startSetExpenses()).then(() => {
         const actions = store.getActions()
@@ -127,6 +134,18 @@ test ('should fetch the expenses from firebase', (done) => {
     })
 })
 
+test('should remove expense from firebase', (done) => {
+    const store = createMockStore({})
+    const id = expenses[1].id
+    store.dispatch(startRemoveExpense({ id })).then(() => {
+        database.ref(`expenses/${id}`)
+            .once('value')
+            .then((snapshot) => {
+                expect(snapshot.val()).toBe(null)
+                done()
+            })
+    })
+})
 // test('addExpense() sets up expense action object with default values', () => {
 //     const expenseDefaults = {
 //         description: '',

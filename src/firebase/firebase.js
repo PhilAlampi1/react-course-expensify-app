@@ -17,7 +17,7 @@ export { firebase, database as default }
 
 
 
-
+// DB TRIGGERS
 // database.ref('expenses').on('child_removed', (snapshot) => {
 //     console.log(snapshot.key, snapshot.val())
 // })
