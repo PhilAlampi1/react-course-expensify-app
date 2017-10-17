@@ -1,22 +1,45 @@
 import uuid from 'uuid'
+import database from '../firebase/firebase'
+
+// ***NOTES ON ADDING DATABASE CALLS TO ACTIONS***
+// 
+// OLD WAY (no database call)
+//  1 - component calls action generator
+//  2 - action generator returns object 
+//  3 - component dispatches object
+//  4 - redux store changes
+//
+// NEW WAY (with database call)
+//  1 - component calls action generator
+//  2 - action generator returns function
+//  3 - component dispatches function (using middleware)
+//  4 - function runs (has ability to dispatch other actions
+//      including those that dispatch objects to update the redux store)
 
 // ADD_EXPENSE
 // Why default to {} if no object is passed in?
-export const addExpense = (
-    { description = '',
-        note = '',
-        amount = 0,
-        createdAt = 0
-    } = {}) => ({
+export const addExpense = (expense) => ({
         type: 'ADD_EXPENSE',
-        expense: {
-            id: uuid(),
-            description,
-            note,
-            amount,
-            createdAt
-        }
+        expense
     })
+
+export const startAddExpense = (expenseData = {}) => {
+    return (dispatch) => {
+        const {
+            description = '',
+            note = '',
+            amount = 0,
+            createdAt = 0
+        } = expenseData
+        const expense = { description, note, amount, createdAt }
+        return database.ref('expenses').push(expense).then((ref) => {
+            dispatch(addExpense({
+                id: ref.key,
+                ...expense
+            }))
+        })
+    }
+}
 
 // REMOVE_EXPENSE
 export const removeExpense = ({ id } = {}) => ({

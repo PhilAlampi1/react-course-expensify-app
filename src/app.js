@@ -8,7 +8,11 @@ import configureStore from './store/configureStore'
 // import { addExpense } from './actions/expenses'
 // import { setTextFilter} from './actions/filters'
 // import getVisibleExpenses from './selectors/expenses'
+// import './playground/promises'
 // END TEST IMPORTS
+
+
+import './firebase/firebase'
 
 import 'normalize.css/normalize.css' // Used to reset browser settings so styles can be applied fresh on next line
 import './styles/styles.scss'

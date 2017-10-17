@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import ExpenseForm from './ExpenseForm'
-import { addExpense } from '../actions/expenses'
+import { startAddExpense } from '../actions/expenses'
 
 // AddExpensePage needs to be a class-based component to avoid inline function (onSubmit)
 // If you didn't do this, onSubmit would need to get recalculated on every render and re-render
 // See commented out code below for old way.
 export class AddExpensePage extends React.Component {
     onSubmit=(expense) => {
-        this.props.addExpense(expense) // new way
+        this.props.startAddExpense(expense) // new way
         this.props.history.push('/')
     }
     render() {
@@ -40,7 +40,7 @@ export class AddExpensePage extends React.Component {
 // Because addExpense() is an imported function above, it's going to be hard to test as a 
 // "spy" in enzyme. Instead, define and pass in the "mapDispatchToProps" argument to connect as shown below:
 const mapDispatchToProps = (dispatch) => ({
-    addExpense: (expense) => dispatch(addExpense(expense))
+    startAddExpense: (expense) => dispatch(startAddExpense(expense))
 })
 
 export default connect(undefined, mapDispatchToProps)(AddExpensePage)
