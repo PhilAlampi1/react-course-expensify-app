@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should render Header correction 1`] = `
+exports[`should render Header correctly 1`] = `
 <header>
   <h1>
     Expensify
@@ -10,6 +10,14 @@ exports[`should render Header correction 1`] = `
     ariaCurrent="true"
     exact={true}
     to="/"
+  >
+    Home
+  </NavLink>
+  <NavLink
+    activeClassName="is-active"
+    ariaCurrent="true"
+    exact={true}
+    to="/dashboard"
   >
     Dashboard
   </NavLink>
@@ -21,5 +29,10 @@ exports[`should render Header correction 1`] = `
   >
     Create Expense
   </NavLink>
+  <button
+    onClick={[Function]}
+  >
+    Logout
+  </button>
 </header>
 `;

@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 // import toJSON from 'enzyme-to-json'
-import Header from '../../components/header'
+import { Header } from '../../components/header'
 
 // *react-test-renderer - renders something from JSX and lets you "assert" or expect against it
 // *Use snapshots to test components (easier than trying to compare JSX)
@@ -12,14 +12,14 @@ import Header from '../../components/header'
 // snapshot to compare future tests against
 // HOWEVER - use enzyme instead of react-test-renderer (more robust and uses RTR on its own)
 
-test('should render Header correction', () => {
+test('should render Header correctly', () => {
     // *** USING ReactShallowRenderer instead of Enzyme: ***
     // const renderer = new ReactShallowRenderer()
     // renderer.render(<Header />) // output we are trying to test
     // expect(renderer.getRenderOutput()).toMatchSnapshot()
 
     // *** USING Enzyme ***
-    const wrapper = shallow(<Header />)
+    const wrapper = shallow(<Header startLogout={() => ({ })} />)
     // //Example:
     // expect(wrapper.find('h1').text()).toBe('Expensify')
 
@@ -31,4 +31,11 @@ test('should render Header correction', () => {
     //     "enzyme-to-json/serializer"
     // ]
     expect(wrapper).toMatchSnapshot()
+})
+
+test('should call startLogout on button click', () => {
+    const startLogout = jest.fn()
+    const wrapper = shallow(<Header startLogout={startLogout} />)
+    wrapper.find('button').simulate('click')
+    expect(startLogout).toHaveBeenCalled()
 })
